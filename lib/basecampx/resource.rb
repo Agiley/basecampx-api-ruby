@@ -50,9 +50,12 @@ module Basecampx
     end
 
     def update_attributes args
+      args = args.respond_to?(:original_data) ? args.original_data : args
+      
       args.each do |key, value|
         self.send(key.to_s+'=', value) if self.respond_to?((key.to_s+'=').to_s)
       end
+      
       self
     end
 
@@ -82,9 +85,7 @@ module Basecampx
       end
       false
     end
-
-protected
-
+    
     def original_data
       @original_data
     end
@@ -93,6 +94,7 @@ protected
       @original_data = data
     end
 
+protected
     def update
       unless self.class.update_url
         return false
